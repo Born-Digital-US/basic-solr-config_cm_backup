@@ -168,6 +168,8 @@
         <!-- catchall field, containing all other searchable text fields (implemented
              via copyField further on in this schema  -->
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+        <field name="catch_all_fields_mt" type="text_general" indexed="true" stored="false" multiValued="true"/>
+
 
         <!-- catchall text field that indexes tokens both normally and in reverse for efficient
              leading wildcard queries. -->
@@ -185,6 +187,7 @@
         -->
         <field name="collection_membership.title_ms" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="content_model.title_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="collection_membership.title_t" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <!--
           Some fields such as popularity and manu_exact could be modified to
           leverage doc values:
@@ -282,6 +285,9 @@
     <!-- copyField commands copy one field to another at the time a document
           is added to the index.  It's used either to index the same field differently,
           or to add multiple fields to the same field for easier/faster searching.  -->
+
+    <copyField source="*_t" dest="catch_all_fields_mt"/>
+
 
     <copyField source="cat" dest="text"/>
     <copyField source="name" dest="text"/>
