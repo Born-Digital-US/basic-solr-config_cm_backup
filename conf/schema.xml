@@ -167,7 +167,7 @@
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.SnowballPorterFilterFactory"
                         protected="protwords.txt"/>
-                <filter class="solr.ASCIIFoldingFilterFactory"/>
+                <filter class="solr.ICUFoldingFilterFactory"/>
                 <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
             </analyzer>
             <analyzer type="query">
@@ -183,7 +183,7 @@
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.SnowballPorterFilterFactory"
                         protected="protwords.txt"/>
-                <filter class="solr.ASCIIFoldingFilterFactory"/>
+                <filter class="solr.ICUFoldingFilterFactory"/>
                 <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
             </analyzer>
         </fieldType>
