@@ -288,7 +288,7 @@
          IndexWriter to write its debugging info the specified file
       -->
     <!-- Set to true for additional information -- PAT? Please confirm - GDM BD customization 2018 -->
-     <infoStream>true</infoStream>
+     <!-- <infoStream file="INFOSTREAM.txt">false</infoStream> -->
   </indexConfig>
 
 
@@ -673,8 +673,8 @@
        handleSelect="true" is not recommended for new users, but is the default
        for backwards compatibility
     -->
-      <!-- Set to false instead of default true-- PAT? Please confirm this is a BD customization 2018 -->
-  <requestDispatcher handleSelect="false" >
+      <!-- Set originally to false instead of default true but will test - BD 2018 -->
+  <requestDispatcher handleSelect="true" >
     <!-- Request Parsing
 
          These settings indicate how Solr Requests may be parsed, and
