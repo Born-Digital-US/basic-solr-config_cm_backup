@@ -101,7 +101,8 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>${solr.data.dir:}</dataDir>
+   <dataDir>${solr.data.dir:/usr/local/solr/collection1/data}</dataDir>
+   <!-- <dataDir>${solr.data.dir:}</dataDir> -->
 
 
   <!-- The DirectoryFactory to use for indexes.
@@ -287,7 +288,7 @@
          Setting The value to true will instruct the underlying Lucene
          IndexWriter to write its debugging info the specified file
       -->
-    <!-- Set to true for additional information -- PAT? Please confirm - GDM BD customization 2018 -->
+    <!-- Set to true in previous setups GDM BD customization 2018 -->
      <!-- <infoStream file="INFOSTREAM.txt">false</infoStream> -->
   </indexConfig>
 
@@ -344,7 +345,9 @@
          If the updateLog is enabled, then it's highly recommended to
          have some sort of hard autoCommit to limit the log size.
       -->
-      <!-- maxTime set to 1500 for faster results -- BD customization 2018 -->
+
+      <!-- maxTime set to 1500 for faster results BD customization 2018 -->
+
      <autoCommit>
        <maxDocs>200</maxDocs>
        <maxTime>1500</maxTime>
@@ -357,7 +360,8 @@
          faster and more near-realtime friendly than a hard commit.
       -->
 
-    <!-- maxTime set to 10 for faster results -- BD customization 2018 -->
+
+    <!-- maxTime set to 10 for faster results  BD customization 2018 -->
      <autoSoftCommit>
          <maxTime>10</maxTime>
      </autoSoftCommit>
@@ -510,14 +514,16 @@
                    initialSize="512"
                    autowarmCount="0"/>
 
-    <!-- PAT? Please confirm lines 514 - 520 are a BD customization?-->
+<!-- Are these lines below a BD customization? -->
     <!-- custom cache currently used by block join -->
+   <!-- commenting out due to conflicts
     <cache name="perSegFilter"
       class="solr.search.LRUCache"
       size="10"
       initialSize="0"
       autowarmCount="10"
       regenerator="solr.NoOpRegenerator" />
+  -->
 
     <!-- Field Value Cache
 
@@ -588,7 +594,8 @@
         then documents 0 through 49 will be collected and cached.  Any further
         requests in that range can be satisfied via the cache.
      -->
-    <!-- Set to 20 from default of 50 - GDM BD customization 2018 -->
+
+   <!-- Set to 20 from default of 50 GDM BD customization 2018 -->
    <queryResultWindowSize>20</queryResultWindowSize>
 
    <!-- Maximum number of documents to cache for any entry in the
@@ -673,7 +680,8 @@
        handleSelect="true" is not recommended for new users, but is the default
        for backwards compatibility
     -->
-      <!-- Set originally to false instead of default true but will test - BD 2018 -->
+
+    <!-- Set originally to false instead of default true but will test BD 2018 -->
   <requestDispatcher handleSelect="true" >
     <!-- Request Parsing
 
