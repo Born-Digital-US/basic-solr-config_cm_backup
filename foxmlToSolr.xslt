@@ -41,7 +41,8 @@
   <!--
     Parameter(s) from custom_parameters.properties.
   -->
-  <xsl:param name="index_ancestors" select="false()"/>
+  <xsl:param name="index_ancestors" select="true()"/>
+  <xsl:param name="index_ancestors_models" select="true()"/>
 
   <!-- These values are accessible in included xslts -->
   <xsl:variable name="PROT">http</xsl:variable>
@@ -51,6 +52,7 @@
   <!--  Used for indexing other objects.
   <xsl:variable name="FEDORA" xmlns:java_string="xalan://java.lang.String" select="substring($FEDORASOAP, 1, java_string:lastIndexOf(java_string:new(string($FEDORASOAP)), '/'))"/>
   -->
+
 
   <!--
   This xslt stylesheet generates the IndexDocument consisting of IndexFields
@@ -118,12 +120,9 @@
   <xsl:include href="/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/slurp_XML_converted_JSON_to_solr.xslt"/>
   <!--<xsl:include href="/var/lib/tomcat7/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/or_transcript_solr.xslt"/>-->
   <!--<xsl:include href="/var/lib/tomcat7/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/vtt_solr.xslt"/>-->
-  <!--  Used for indexing other objects. -->
   <xsl:include href="/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/library/traverse-graph.xslt"/>
-  <!-- -->
-  <!-- Used to index the list of collections to which an object belongs. Requires the "traverse-graph.xslt" bit as well. -->
   <xsl:include href="/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/hierarchy.xslt"/>
-  <!-- -->
+  <xsl:include href="/var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/ancestors_models_to_solr_field.xslt"/>
 
   <!-- Decide which objects to modify the index of -->
   <xsl:template match="/">
@@ -271,8 +270,6 @@
       -->
 
       <!-- Index ancestors, as used in the islandora_collection_search module.
-       Requires the "hierarchy.xslt" to be included (uncomment near the top of
-       the file?).
         Also, note: When migrating objects between collections, it would be
         necessary to update all descendents to ensure their list of ancestors
         reflect the current state... We do this in the
@@ -294,6 +291,17 @@
         </xsl:for-each>
       </xsl:if>
 
+      <xsl:if test="string($index_ancestors_models) = 'true'">
+        <xsl:variable name="ancestors_models">
+          <xsl:call-template name="get-ancestors-models">
+            <xsl:with-param name="PID" select="$PID"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <xsl:for-each select="xalan:nodeset($ancestors_models)//sparql:model">
+          <field name="ancestors_models_ms"><xsl:value-of select="substring-after(@uri, '/')"/></field>
+        </xsl:for-each>
+      </xsl:if>
     </doc>
   </xsl:template>
 
